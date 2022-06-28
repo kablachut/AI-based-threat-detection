@@ -1,9 +1,7 @@
 from keras.models import load_model
-# import read_pcap_http
 import pandas as pd
 import numpy as np
 from data_prep import prepare_samples
-
 import logging
 import graypy
 import time
@@ -44,11 +42,8 @@ print(y)
 
 model = load_model('multiclass_classification_model.h5')
 
-y = y
 labels_list = ['ARP_spoofing', 'Docker', 'Exploit', 'Hydra', 'Nmap_sV', 'Regular_traffic', 'SQL_injection'] 
-cm_sum = np.zeros((7,7))
 _, accuracy_test = model.evaluate(X, y)
-print(type(X))
 y_pred = model.predict(X)
 y_pred_rounded = np.round(y_pred, 2)
 y_pred_df = pd.DataFrame(data=y_pred_rounded, columns = labels_list )
@@ -59,5 +54,4 @@ for prediction in predictions:
     message = message_dict[prediction]
     my_logger.debug('Threat detection module: ' + message)
     time.sleep(1)
-
     
