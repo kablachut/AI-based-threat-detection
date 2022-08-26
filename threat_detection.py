@@ -23,7 +23,7 @@ handler = graypy.GELFTCPHandler('localhost', 12201)
 my_logger.addHandler(handler)
 
 merged_features_list = []
-with open(r'merged_features.txt', 'r') as fp:
+with open(r'features_multiclass_model.txt', 'r') as fp:
     for line in fp:
         x = line[:-1]
         merged_features_list.append(x)

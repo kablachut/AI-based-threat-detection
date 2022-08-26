@@ -64,17 +64,18 @@ def encode_classes(dataframe):
     dataframe['class2'] = dataframe['class']
     return dataframe
 
-def prepare_samples(dataframe):
+def prepare_samples(dataframe, for_training):
     dataframe = split_protocols(dataframe)
     class2_non_normalized =  dataframe['class']
-    dataframe = encode_classes(dataframe)
+
+    # when preparing the data for training process, classes need to be encoded
+    if for_training:
+        dataframe = encode_classes(dataframe)
 
     # drop unncecessary columns
     dataframe = dataframe.drop(columns = ['class', 'Date', 'Unnamed: 0'])
     # remove nulls
     dataframe = dataframe.fillna(0) 
-
-    print(dataframe)
     x = dataframe.values #returns a numpy array
     # normalize data 
     min_max_scaler = MinMaxScaler()
@@ -82,5 +83,3 @@ def prepare_samples(dataframe):
     df_normalized = pd.DataFrame(x_scaled, columns=dataframe.columns)
     df_normalized['class2'] = class2_non_normalized
     return df_normalized
-
-
