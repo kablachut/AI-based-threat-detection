@@ -31,7 +31,6 @@ y_pred = model.predict(X)
 y_pred_rounded = np.round(y_pred, 2)
 labels_list = ['ARP_spoofing', 'Docker', 'Exploit', 'Hydra', 'Nmap_sV', 'Regular_traffic', 'SQL_injection'] 
 y_pred_df = pd.DataFrame(data=y_pred_rounded, columns = labels_list )
-y_pred_df = pd.DataFrame(data=y_pred_rounded, columns = labels_list )
 print(y_pred_df)
 # second highest prediction value 
 print(y_pred_df.to_string())
