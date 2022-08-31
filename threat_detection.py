@@ -16,6 +16,9 @@ message_dict = {
     'SQL_injection' : 'Attack detected: SQL injection,'
 }
 
+'''
+    provide path to required pcap file and frequency 
+'''
 pcap_path = 'regular_traffic2_29_04.pcap'
 frequency = '30S'
 packets_df = read_pcap_to_df(pcap_path)
@@ -23,9 +26,10 @@ print(packets_df.head(10))
 df_features = generate_features(packets_df, frequency)
 df_features = split_protocols(df_features)
 
-""" we read the training set and merge it with new pcap to be able to properly normalize the new data
-as otherwise normalized values are not comparable with what the model knows.
-"""
+''' 
+    we read the training set and merge it with new pcap to be able to properly normalize 
+    the new data as otherwise normalized values are not comparable with what the model knows.
+'''
 training_df = read_training_dataset('features_merged_30_05_reduced_fixed_list.csv')
 training_df_length = training_df.shape[0]
 print(training_df_length)
