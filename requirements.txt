@@ -3,3 +3,4 @@ pandas==1.4.3
 keras==2.9.0
 tensorflow==2.9.0
 sklearn
+graypy==2.1.0
