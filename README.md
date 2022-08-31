@@ -13,4 +13,4 @@ localhost:9000
 Default credentials are (admin, admin)
 
 
-The threat detection module is the threat_detection.py script, this script runs a pcap file, processes the dat, generates predictions and provide them to Graylog. 
+The threat detection module is the threat_detection.py script, this script runs a pcap file, processes the data, generates predictions and provide them to Graylog. 
