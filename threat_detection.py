@@ -1,10 +1,11 @@
 from keras.models import load_model
 import pandas as pd
 import numpy as np
-from data_prep import prepare_samples
+# from data_prep import prepare_samples
 import logging
 import graypy
 import time
+from process_pcap import generate_features, prepare_samples, read_pcap_to_df, read_training_dataset, split_protocols
 
 message_dict = {
     'ARP_spoofing': 'Attack detected: ARP Spoofing,',
@@ -16,10 +17,28 @@ message_dict = {
     'SQL_injection' : 'Attack detected: SQL injection,'
 }
 
-dataframe = pd.read_csv('features_merged_unknown_23_08.csv')
-dataframe = prepare_samples(dataframe, for_training=False)
-print(dataframe.columns)
-y = dataframe['class2']
+# dataframe = pd.read_csv('features_merged_unknown_23_08.csv')
+# dataframe = prepare_samples(dataframe, for_training=False)
+# print(dataframe.columns)
+# y = dataframe['class2']
+
+pcap_path = 'regular_traffic2_29_04.pcap'
+frequency = '30S'
+packets_df = read_pcap_to_df(pcap_path)
+print(packets_df.head(10))
+df_features = generate_features(packets_df, frequency)
+df_features = split_protocols(df_features)
+
+""" we read the training set and merge it with new pcap to be able to properly normalize the new data
+as otherwise normalized values are not comparable with what the model knows.
+"""
+training_df = read_training_dataset('features_merged_30_05_reduced_fixed_list.csv')
+training_df_length = training_df.shape[0]
+print(training_df_length)
+merged_df = pd.concat([training_df, df_features], ignore_index=True, sort=False)
+dataframe = prepare_samples(merged_df)
+# remove training dataset after normalization 
+dataframe = dataframe.iloc[training_df_length: , :]
 
 my_logger = logging.getLogger('test_logger')
 my_logger.setLevel(logging.DEBUG)
@@ -84,9 +103,9 @@ for index, row in predictions_df.iterrows():
     print(message)
 
     # binary classification message 
-    if row['binary_prediction'] < 0.4:
+    if row['binary_prediction'] < 0.48:
         message_binary_model = "network traffic looks as usually, model's confidence: " + str(round(row['binary_prediction'] * 100, 2)) + '%.'
-    elif row['binary_prediction'] > 0.6:
+    elif row['binary_prediction'] > 0.52:
         message_binary_model = "attack detected, model's confidence: " + str(round(row['binary_prediction'] * 100, 2)) + '%.'
     else: 
         message_binary_model = "equivocal prediction results."  

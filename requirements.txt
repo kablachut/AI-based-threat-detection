@@ -4,3 +4,4 @@ keras==2.9.0
 tensorflow==2.9.0
 sklearn
 graypy==2.1.0
+pyshark==0.4.5
