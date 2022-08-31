@@ -1,7 +1,6 @@
 from keras.models import load_model
 import pandas as pd
 import numpy as np
-# from data_prep import prepare_samples
 import logging
 import graypy
 import time
@@ -16,11 +15,6 @@ message_dict = {
     'Regular_traffic': 'Network traffic looks as usually,', 
     'SQL_injection' : 'Attack detected: SQL injection,'
 }
-
-# dataframe = pd.read_csv('features_merged_unknown_23_08.csv')
-# dataframe = prepare_samples(dataframe, for_training=False)
-# print(dataframe.columns)
-# y = dataframe['class2']
 
 pcap_path = 'regular_traffic2_29_04.pcap'
 frequency = '30S'
